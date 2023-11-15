@@ -13,7 +13,7 @@ Currently, the email functionality is in Private Beta for Flex.
 3. Studio Flow [calls a Function](https://github.com/bruno222/flex-email-ai-routing/blob/6e80f23ca505225ec8d20345c72f26a0179de457/src/functions/ai-routing.protected.ts)
 4. Function [calls OpenAI with a Prompt](https://github.com/bruno222/flex-email-ai-routing/blob/6e80f23ca505225ec8d20345c72f26a0179de457/src/functions/ai-routing.protected.ts#L111-L124)
 5. Using the response from OpenAI, Studio creates a new attribute named `task.attributes.queue`; for instance, it could be set to "Sales".
-6. It is not part of this Repo, but you only need to create a TaskRouter Workflow that matches this `task attribute.queue` to the appropriate queue.
+6. It is not part of this Repo, but you only need to create a TaskRouter Workflow that matches this `task.attribute.queue` to the appropriate queue.
 
 ## How to install it?
 
