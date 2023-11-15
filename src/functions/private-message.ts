@@ -16,8 +16,8 @@ export const handler: ServerlessFunctionSignature = function(
   // After compiling the assets, the result will be "message.js" not a TypeScript file.
   const privateMessageAsset = assets['/message.js'];
   const privateMessagePath = privateMessageAsset.path;
-  const message = require(privateMessagePath);
+  // const message = require(privateMessagePath);
   const twiml = new Twilio.twiml.MessagingResponse();
-  twiml.message(message.privateMessage());
+  // twiml.message(message.privateMessage());
   callback(null, twiml);
 };
