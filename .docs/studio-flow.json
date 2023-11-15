@@ -1,0 +1,211 @@
+{
+    "description": "Shared Email Flow for AI Routing Demo",
+    "states": [
+      {
+        "name": "Trigger",
+        "type": "trigger",
+        "transitions": [
+          {
+            "event": "incomingMessage"
+          },
+          {
+            "event": "incomingCall"
+          },
+          {
+            "next": "ai",
+            "event": "incomingConversationMessage"
+          },
+          {
+            "event": "incomingRequest"
+          },
+          {
+            "event": "incomingParent"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      {
+        "name": "sendToFlex",
+        "type": "send-to-flex",
+        "transitions": [
+          {
+            "event": "callComplete"
+          },
+          {
+            "event": "failedToEnqueue"
+          },
+          {
+            "event": "callFailure"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 100,
+            "y": 1200
+          },
+          "workflow": "WWcfda66c73642b7e42842afd78a8b7bd5",
+          "channel": "TCd657a0002b505de8470d08bd640592d9",
+          "attributes": "{\n\"name\": \"{{trigger.conversation.From}} - {{flow.variables.queue}}\",\n\"queue\": \"{{flow.variables.queue}}\"\n}"
+        }
+      },
+      {
+        "name": "ai",
+        "type": "run-function",
+        "transitions": [
+          {
+            "next": "queueNameOrAdditionalQuestion",
+            "event": "success"
+          },
+          {
+            "next": "set-default-queue",
+            "event": "fail"
+          }
+        ],
+        "properties": {
+          "service_sid": "ZS716c9cf4dd2f045f8143449f4f178025",
+          "environment_sid": "ZE6f9a70be884997ef569204587b7b5562",
+          "offset": {
+            "x": 260,
+            "y": 280
+          },
+          "function_sid": "ZHaed8dc18a6e7723286cf54d11a473e43",
+          "parameters": [
+            {
+              "value": "{{trigger.conversation.ChannelSid}}",
+              "key": "ChannelSid"
+            },
+            {
+              "value": "{{trigger.conversation.Subject}}",
+              "key": "Subject"
+            }
+          ],
+          "url": "https://flex-email-ai-routing-5735-dev.twil.io/ai-routing"
+        }
+      },
+      {
+        "name": "queueNameOrAdditionalQuestion",
+        "type": "split-based-on",
+        "transitions": [
+          {
+            "event": "noMatch"
+          },
+          {
+            "next": "set-queue",
+            "event": "match",
+            "conditions": [
+              {
+                "friendly_name": "queueName is set",
+                "arguments": [
+                  "{{widgets.ai.parsed.queueName}}"
+                ],
+                "type": "is_not_blank",
+                "value": "Is Not Blank"
+              }
+            ]
+          },
+          {
+            "next": "sendEmail",
+            "event": "match",
+            "conditions": [
+              {
+                "friendly_name": "additionalQuestion",
+                "arguments": [
+                  "{{widgets.ai.parsed.queueName}}"
+                ],
+                "type": "is_blank",
+                "value": "Is Blank"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "input": "{{widgets.ai.parsed.queueName}}",
+          "offset": {
+            "x": -300,
+            "y": 610
+          }
+        }
+      },
+      {
+        "name": "sendEmail",
+        "type": "send-and-wait-for-reply",
+        "transitions": [
+          {
+            "next": "ai",
+            "event": "incomingMessage"
+          },
+          {
+            "event": "timeout"
+          },
+          {
+            "event": "deliveryFailure"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": -790,
+            "y": 270
+          },
+          "service": "{{trigger.message.InstanceSid}}",
+          "channel": "{{trigger.message.ChannelSid}}",
+          "from": "{{flow.channel.address}}",
+          "message_type": "custom",
+          "body": "{{widgets.ai.parsed.additionalQuestion}}",
+          "timeout": "3600"
+        }
+      },
+      {
+        "name": "set-queue",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "sendToFlex",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "{{widgets.ai.parsed.queueName}}",
+              "key": "queue"
+            }
+          ],
+          "offset": {
+            "x": -160,
+            "y": 910
+          }
+        }
+      },
+      {
+        "name": "set-default-queue",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "sendToFlex",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "Everyone",
+              "key": "queue"
+            }
+          ],
+          "offset": {
+            "x": 320,
+            "y": 900
+          }
+        }
+      }
+    ],
+    "initial_state": "Trigger",
+    "flags": {
+      "allow_concurrent_calls": true
+    }
+  }
