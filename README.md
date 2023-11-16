@@ -1,10 +1,10 @@
 ## What is it?
 
-This method provides a straightforward, fully automated way to direct customer emails to the appropriate queue in Flex using OpenAI.
+This solution provides an automated way to forward customer emails to the right queue in Flex using OpenAI.
 
-It also addresses scenarios in which OpenAI encounters uncertainties about the content of the customer's email. In such cases, OpenAI will automatically reply to the customer, seeking clarification.
+When OpenAI doesn't know what to do, it will automatically reply the email to the customer, seeking clarification.
 
-Currently, the email functionality is in Private Beta for Flex.
+_(currently, the email functionality is in Private Beta for Flex)_
 
 ## How it works?
 
