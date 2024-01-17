@@ -43,7 +43,7 @@ _(currently, the email functionality is in Private Beta for Flex)_
 </p>
 
 
-
+---
  ### Example 2 - Customer Service Queue
 
 <p align="center">
@@ -56,7 +56,7 @@ _(currently, the email functionality is in Private Beta for Flex)_
   <img src="https://github.com/bruno222/flex-email-ai-routing/assets/1012787/2eb689f7-a378-4cae-bb0d-311712df5407">
 </p>
 
-
+---
 ### Example 3 - When in doubt?
 
 When OpenAI cannot determine the Queue, it will reply to the customer, asking for more information about it:
