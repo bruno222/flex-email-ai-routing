@@ -4,8 +4,6 @@ This solution provides an automated way to forward customer emails to the right 
 
 When OpenAI doesn't know what to do, it will automatically reply the email to the customer, seeking clarification.
 
-_(currently, the email functionality is in Private Beta for Flex)_
-
 ## How it works?
 
 1. Customer sends an email;
